@@ -31,19 +31,13 @@ export default defineComponent({
     const { dragstart, dragend } = useMenuDragger(containerRef, data);
 
     // 2. 实现获取焦点
-    const { blockMousedown, focusData, clearBlockFocus } = useFocus(data, (e) => {
+    const { blockMousedown, focusData, containerMousedown, lastSelectBlock } =
+      useFocus(data, (e) => {
         // 3. 拖拽多个元素的功能
-      mousedown(e)
-    });
+        mousedown(e);
+      });
 
-    const { mousedown } = useBlockDragger(focusData);
-
-   
-    const containerMousedown = (e) => {
-      clearBlockFocus();
-    };
-
-  
+    const { mousedown, markLine } = useBlockDragger(focusData, lastSelectBlock, data );
 
     return () => (
       <div class="editor">
@@ -82,13 +76,19 @@ export default defineComponent({
               className="editor-container-canvas__content"
               style={containerStyles.value}
             >
-              {data.value.blocks.map((block) => (
+              {data.value.blocks.map((block, i) => (
                 <EditorBlock
                   class={block.focus ? "editor-block-focus" : ""}
-                  onMousedown={(e) => blockMousedown(e, block)}
+                  onMousedown={(e) => blockMousedown(e, block, i)}
                   block={block}
                 ></EditorBlock>
               ))}
+              {markLine.x !== null && (
+                <div class="line-x" style={{ left: markLine.x + 'px' }}></div>
+              )}
+              {markLine.y !== null && (
+                <div class="line-y" style={{ top: markLine.y + 'px' }}></div>
+              )}
             </div>
           </div>
         </div>

@@ -38,12 +38,26 @@
     display: flex;
     flex-direction: column;
     margin: 0 20px;
-    border:1px solid rgb(60, 12, 218);
+   
     &-top{
       height: 50px;
     }
     &-canvas__content {
       position: relative;
+      border:1px solid rgb(60, 12, 218);
+      .line-x {
+        position: absolute;
+        top: 0;
+        border: 2px dotted #999;
+        height: 100%;
+      }
+      .line-y {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        border: 2px dotted #999;
+      }
+      
     }
   }
 
@@ -62,4 +76,5 @@
         background-color: transparent;
     }
   }
+
 }
